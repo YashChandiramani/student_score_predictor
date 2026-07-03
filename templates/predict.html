@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Predict</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        🎓 Student Score Predictor
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+
+    <i class="fa-solid fa-bars"></i>
+
+</div>
+
+    <div class="nav-links" id = "navLinks">
+        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="/history" class="active">History</a>
+        <a href="/logout" class="active">Logout</a>
+    </div>
+
+</nav>
+
+<div class="auth-container">
+
+<div class="auth-card card" style="width:1200px;">
+
+<h2>Student Performance Prediction</h2>
+
+{% if prediction %}
+
+<h1 style="text-align:center;color:#38bdf8;">
+Predicted Score: {{ prediction }}
+</h1>
+
+{% endif %}
+
+<form method="POST">
+
+<!-- =============================== -->
+<!-- ROW 1 -->
+<!-- =============================== -->
+
+<div class="form-row">
+
+    <!-- Academic Information -->
+
+<div class="form-column">
+
+    <div class="section-title">
+        📚 Academic Information
+    </div>
+
+    <!-- Age -->
+
+    <label>Age</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="age"
+        name="age"
+        min="15"
+        max="23"
+        value="20">
+
+    <div class="slider-value">
+        <span id="age_value">20</span> Years
+    </div>
+
+
+    <!-- Study Hours -->
+
+    <label>Study Hours Per Day</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="study_hours_per_day"
+        name="study_hours_per_day"
+        min="0"
+        max="9"
+        step="0.1"
+        value="4">
+
+    <div class="slider-value">
+        <span id="study_hours_per_day_value">4</span> Hours
+    </div>
+
+
+    <!-- Deep Work -->
+
+    <label>How many hours do you actually do focused work?</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="deep_work_sessions"
+        name="deep_work_sessions"
+        min="0"
+        max="7"
+        step="0.1"
+        value="3">
+
+    <div class="slider-value">
+        <span id="deep_work_sessions_value">3</span> Hours
+    </div>
+
+
+    <!-- Assignment Completion -->
+
+    <label>Assignment Completion Rate (%)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="assignment_completion_rate"
+        name="assignment_completion_rate"
+        min="0"
+        max="100"
+        value="80">
+
+    <div class="slider-value">
+        <span id="assignment_completion_rate_value">80</span> %
+    </div>
+
+
+    <!-- Attendance -->
+
+    <label>Attendance Percentage (%)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="attendance_percentage"
+        name="attendance_percentage"
+        min="0"
+        max="100"
+        value="80">
+
+    <div class="slider-value">
+        <span id="attendance_percentage_value">80</span> %
+    </div>
+
+</div>
+
+
+<!-- Digital Habits -->
+
+<div class="form-column">
+
+    <div class="section-title">
+        📱 Digital Habits
+    </div>
+
+    <!-- Social Media -->
+
+    <label>How many hours do you spend on Social Media?</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="social_media_hours"
+        name="social_media_hours"
+        min="0"
+        max="9"
+        step="0.1"
+        value="2">
+
+    <div class="slider-value">
+        <span id="social_media_hours_value">2</span> Hours
+    </div>
+
+
+    <!-- Doomscrolling -->
+
+    <label>Do you do Doomscrolling Before Sleep?</label>
+
+    <select name="doomscrolling_before_sleep">
+
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+
+    </select>
+
+
+    <!-- Notifications -->
+
+    <label>How distracting are Notifications? (5-100)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="notification_distractions"
+        name="notification_distractions"
+        min="5"
+        max="100"
+        value="25">
+
+    <div class="slider-value">
+        <span id="notification_distractions_value">25</span>
+    </div>
+
+
+    <!-- AI Tool Usage -->
+
+    <label>For how many hours do you use AI Tools?</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="ai_tool_usage_hours"
+        name="ai_tool_usage_hours"
+        min="0"
+        max="5"
+        step="0.1"
+        value="1">
+
+    <div class="slider-value">
+        <span id="ai_tool_usage_hours_value">1</span> Hours
+    </div>
+
+
+    <!-- Gaming -->
+
+    <label>How many hours do you spend on Gaming?</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="gaming_hours"
+        name="gaming_hours"
+        min="0"
+        max="7"
+        step="0.1"
+        value="2">
+
+    <div class="slider-value">
+        <span id="gaming_hours_value">2</span> Hours
+    </div>
+
+</div>
+
+</div>
+
+<!-- =============================== -->
+<!-- ROW 2 -->
+<!-- =============================== -->
+
+    <div class="form-column">
+
+        <!-- Mental & Productivity -->
+
+<div class="form-column">
+
+    <div class="section-title">
+        🧠 Mental & Productivity
+    </div>
+
+    <!-- Stress Level -->
+
+    <label>Do you feel stressed out? (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="stress_level"
+        name="stress_level"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="stress_level_value">5</span>
+    </div>
+
+
+    <!-- Motivation -->
+
+    <label>What is your motivation level while studying? (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="motivation_level"
+        name="motivation_level"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="motivation_level_value">5</span>
+    </div>
+
+
+    <!-- Focus -->
+
+    <label>What is your Focus Score? (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="focus_score"
+        name="focus_score"
+        min="1"
+        max="10"
+        step="0.1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="focus_score_value">5</span>
+    </div>
+
+
+    <!-- Procrastination -->
+
+    <label>How much do you procrastinate? (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="procrastination_index"
+        name="procrastination_index"
+        min="0"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="procrastination_index_value">5</span>
+    </div>
+
+
+    <!-- Sleep -->
+
+    <label>How many hours do you sleep?</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="sleep_hours"
+        name="sleep_hours"
+        min="3"
+        max="10"
+        step="0.1"
+        value="7">
+
+    <div class="slider-value">
+        <span id="sleep_hours_value">7</span> Hours
+    </div>
+
+</div>
+
+
+
+<!-- Lifestyle -->
+
+<div class="form-column">
+
+    <div class="section-title">
+        🏃 Lifestyle
+    </div>
+
+    <!-- Caffeine -->
+
+    <label>How many cups of caffeine (Tea/Coffee) do you consume every day?</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="caffeine_intake"
+        name="caffeine_intake"
+        min="0"
+        max="7"
+        step="1"
+        value="2">
+
+    <div class="slider-value">
+        <span id="caffeine_intake_value">2</span> Cups
+    </div>
+
+
+    <!-- Physical Activity -->
+
+    <label>How many hours do you spend on physical activity?</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="physical_activity_hours"
+        name="physical_activity_hours"
+        min="0"
+        max="4"
+        step="0.1"
+        value="1">
+
+    <div class="slider-value">
+        <span id="physical_activity_hours_value">1</span> Hours
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- =============================== -->
+<!-- ROW 3 -->
+<!-- =============================== -->
+
+<!-- =============================== -->
+<!-- Environment -->
+<!-- =============================== -->
+
+<div class="form-column">
+
+    <div class="section-title">
+        🌍 Environment
+    </div>
+
+    <!-- Internet Quality -->
+
+    <label>How is the Internet quality where you live? (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="internet_quality"
+        name="internet_quality"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="internet_quality_value">5</span>
+    </div>
+
+
+    <!-- Family Support -->
+
+    <label>How supportive is your family? (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="family_support"
+        name="family_support"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="family_support_value">5</span>
+    </div>
+
+
+    <!-- Financial Stress -->
+
+    <label>Financial Stress (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="financial_stress"
+        name="financial_stress"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="financial_stress_value">5</span>
+    </div>
+
+</div>
+
+
+<!-- =============================== -->
+<!-- Study Efficiency -->
+<!-- =============================== -->
+
+<div class="form-column">
+
+    <div class="section-title">
+        ⚡ Study Efficiency
+    </div>
+
+    <!-- Productivity After Midnight -->
+
+    <label>How productive are you after midnight? (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="productivity_after_midnight"
+        name="productivity_after_midnight"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="productivity_after_midnight_value">5</span>
+    </div>
+
+
+    <!-- Revision Efficiency -->
+
+    <label>Last Minute Revision Efficiency (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="revision_efficiency"
+        name="revision_efficiency"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="revision_efficiency_value">5</span>
+    </div>
+
+
+    <!-- Burnout Risk -->
+
+    <label>Burnout Risk (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="burnout_risk"
+        name="burnout_risk"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="burnout_risk_value">5</span>
+    </div>
+
+
+    <!-- Consistency -->
+
+    <label>Consistency Score (1-10)</label>
+
+    <input
+        type="range"
+        class="range-slider"
+        id="consistency_score"
+        name="consistency_score"
+        min="1"
+        max="10"
+        step="1"
+        value="5">
+
+    <div class="slider-value">
+        <span id="consistency_score_value">5</span>
+    </div>
+
+</div>
+
+<!-- =============================== -->
+<!-- Mental State -->
+<!-- =============================== -->
+
+<div class="mental-section">
+
+    <div class="section-title" style="text-align:center;">
+        🎯 Mental State
+    </div>
+
+    <select
+        name="mental_state"
+        class="mental-dropdown">
+
+        <option value="Focused">Focused</option>
+        <option value="Distracted">Distracted</option>
+        <option value="Burnout">Burnout</option>
+
+    </select>
+
+</div>
+
+
+<!-- =============================== -->
+<!-- Predict Button -->
+<!-- =============================== -->
+
+<div class="predict-btn-container">
+
+    <button
+        type="submit"
+        class="predict-btn">
+
+        Predict Score
+
+    </button>
+
+</div>
+
+</form>
+
+
+<!-- =============================== -->
+<!-- Prediction Result -->
+<!-- =============================== -->
+
+{% if prediction %}
+
+<div class="prediction-card">
+
+    <h2>🎉 Prediction Completed</h2>
+
+    <h1>
+
+        {{ prediction }}
+
+    </h1>
+
+    <p>
+
+        Predicted Final Exam Score
+
+    </p>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const sliders = document.querySelectorAll(".range-slider");
+
+    sliders.forEach(function(slider){
+
+        const valueSpan = document.getElementById(slider.id + "_value");
+
+        if(valueSpan){
+
+            // Show default value
+            valueSpan.textContent = slider.value;
+
+            // Update while dragging
+            slider.addEventListener("input", function(){
+
+                valueSpan.textContent = this.value;
+
+            });
+
+        }
+
+    });
+
+});
+
+</script>
+
+<footer class="footer">
+
+    <div class="footer-center">
+
+         Made with Passion and Love for Exams 🚀
+
+    </div>
+
+    <div class="footer-right">
+
+        <p>Designed and Crafted by Yash Chandiramani</p>
+
+        <div class="social-links">
+
+            <a href="https://github.com/YashChandiramani" target="_blank">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+
+            <a href="https://www.linkedin.com/in/yash-chandiramani-589699352/" target="_blank">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<script>
+
+{% if prediction and prediction|float >= 90 %}
+
+<script>
+
+{% if prediction and prediction|float >= 90 %}
+
+const duration = 3000;
+
+const animationEnd = Date.now() + duration;
+
+const defaults = {
+
+    startVelocity: 30,
+
+    spread: 360,
+
+    ticks: 80,
+
+    zIndex: 1000
+
+};
+
+function randomInRange(min, max) {
+
+    return Math.random() * (max - min) + min;
+
+}
+
+const interval = setInterval(function () {
+
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+
+        return clearInterval(interval);
+
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+
+    confetti({
+
+        ...defaults,
+
+        particleCount,
+
+        origin: {
+
+            x: randomInRange(0.1, 0.3),
+
+            y: Math.random() - 0.2
+
+        }
+
+    });
+
+    confetti({
+
+        ...defaults,
+
+        particleCount,
+
+        origin: {
+
+            x: randomInRange(0.7, 0.9),
+
+            y: Math.random() - 0.2
+
+        }
+
+    });
+
+}, 250);
+
+{% endif %}
+
+</script>
+
+{% endif %}
+
+</script>
+
+</body>
+</html>

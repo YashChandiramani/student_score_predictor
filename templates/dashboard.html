@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        🎓 Student Score Predictor
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+
+    <i class="fa-solid fa-bars"></i>
+
+</div>
+
+    <div class="nav-links" id = "navLinks">
+        <a href="/predict" class="active">Predict</a>
+        <a href="/history" class="active">History</a>
+        <a href="/logout" class="active">Logout</a>
+    </div>
+
+</nav>
+
+<div class="dashboard-container">
+
+    <h1>Welcome, {{ name }}</h1>
+
+    <div class="stats-grid">
+
+    <div class="stat-card card">
+        <h3>Total Predictions</h3>
+        <h2>{{ total_predictions }}</h2>
+    </div>
+
+    <div class="stat-card card">
+        <h3>Latest Score</h3>
+        <h2>{{ latest_score }}</h2>
+    </div>
+
+    <div class="stat-card card">
+        <h3>Average Score</h3>
+        <h2>{{ average_score }}</h2>
+    </div>
+
+    <div class="stat-card card">
+        <h3>Highest Score</h3>
+        <h2>{{ highest_score }}</h2>
+    </div>
+
+</div>
+
+    <div class="dashboard-card card">
+
+    <h2>Quick Actions</h2>
+
+    <div class="action-buttons">
+
+        <a href="/profile" class="btn btn-primary">
+            👤 View Profile
+        </a>
+
+        <a href="/predict" class="btn btn-primary">
+            ➕ New Prediction
+        </a>
+
+        <a href="/download_csv" class="btn btn-download">
+            📄 Download CSV
+        </a>
+
+        <a href="/download_pdf" class="btn btn-download">
+            📑 Download PDF
+        </a>
+
+        <a href="/download_ai_report" class="btn btn-dark">
+    🤖 AI Report
+        </a>
+
+    </div>
+
+</div>
+
+    <div class="chart-grid">
+
+    <div class="chart-card card">
+        <h3>Prediction History</h3>
+
+        <canvas id="scoreChart"> height = "250"</canvas>
+    </div>
+
+    <div class="chart-card card">
+        <h3>Mental State Distribution</h3>
+
+        <canvas id="mentalChart"> height = "250"</canvas>
+    </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const scoreLabels = [
+    {% for row in score_history %}
+        "{{ row.prediction_id }}",
+    {% endfor %}
+];
+
+const scoreData = [
+    {% for row in score_history %}
+        {{ row.predicted_score }},
+    {% endfor %}
+];
+
+new Chart(document.getElementById("scoreChart"),{
+
+    type:"line",
+
+    data:{
+
+        labels:scoreLabels,
+
+        datasets:[{
+
+            label:"Predicted Score",
+
+            data:scoreData,
+
+            borderWidth:3,
+
+            tension:0.3,
+
+            fill:false
+
+        }]
+
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                display:true
+            }
+        }
+
+    }
+
+});
+
+
+const mentalLabels=[
+
+{% for row in mental_state_data %}
+    "{{ row.mental_state }}",
+{% endfor %}
+
+];
+
+const mentalCounts=[
+
+{% for row in mental_state_data %}
+    {{ row.total }},
+{% endfor %}
+
+];
+
+new Chart(document.getElementById("mentalChart"),{
+
+    type:"pie",
+
+    data:{
+
+        labels:mentalLabels,
+
+        datasets:[{
+
+            data:mentalCounts
+
+        }]
+
+    },
+
+    options:{
+
+        responsive:true,
+        maintainAspectRatio:true,
+
+    }
+
+});
+
+</script>
+
+<script>
+
+function toggleMenu(){
+
+    document
+        .getElementById("navLinks")
+        .classList
+        .toggle("active");
+
+}
+
+</script>
+
+<footer class="footer">
+
+    <div class="footer-center">
+
+         Made with Passion and Love for Exams 🚀
+
+    </div>
+
+    <div class="footer-right">
+
+        <p>Designed and Crafted by Yash Chandiramani</p>
+
+        <div class="social-links">
+
+            <a href="https://github.com/YashChandiramani" target="_blank">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+
+            <a href="https://www.linkedin.com/in/yash-chandiramani-589699352/" target="_blank">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

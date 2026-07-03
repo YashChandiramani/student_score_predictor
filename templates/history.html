@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>History</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        🎓 Student Score Predictor
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+
+    <i class="fa-solid fa-bars"></i>
+
+</div>
+
+    <div class="nav-links" id = "navLinks">
+        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="/predict" class="active">Predict</a>
+        <a href="/logout" class="active">Logout</a>
+    </div>
+
+</nav>
+
+<div class="dashboard-container">
+
+<h1>Prediction History</h1>
+
+<div class="table-card card">
+
+    <table class="history-table">
+
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Predicted Score</th>
+                <th>Mental State</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for row in predictions %}
+
+        <tr>
+            <td>{{ row.prediction_date }}</td>
+
+            <td>
+                <span class="score-badge">
+                    {{ row.predicted_score }}%
+                </span>
+            </td>
+
+            <td>
+                <span class="state {{ row.mental_state|lower }}">
+    {{ row.mental_state }}
+</span>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- ==========================
+     SMART PERFORMANCE INSIGHTS
+========================== -->
+
+<div class="dashboard-card card">
+
+    <h2>🧠 Smart Performance Insights</h2>
+
+    {% if latest %}
+
+    <div class="insight-box">
+
+        <h3>
+
+            Latest Predicted Score :
+            <span style="color:#38bdf8;">
+
+                {{ latest.predicted_score }}%
+
+            </span>
+
+        </h3>
+
+        <h3>
+
+            Overall Rating :
+            <span style="color:#22c55e;">
+
+                {{ rating }}
+
+            </span>
+
+        </h3>
+
+        <br>
+
+        <h3>💡 Personalized Recommendations</h3>
+
+        {% if feedback %}
+
+        <ul class="insight-list">
+
+            {% for tip in feedback %}
+
+            <li>{{ tip }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+        {% else %}
+
+        <p style="color:#22c55e;font-weight:bold;">
+
+            🎉 Excellent! Your study habits are looking great.
+            Keep maintaining your consistency.
+
+        </p>
+
+        {% endif %}
+
+        <br>
+
+        <h3>🎯 Potential</h3>
+
+        <p>
+
+            {{ potential }}
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<div class="dashboard-card card">
+
+    <h2>📊 Study Habits Analysis</h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <h3>📚 Avg Study Hours</h3>
+
+            <h2>
+                {{ "%.1f"|format(study_stats.avg_study or 0) }} hrs
+            </h2>
+
+        </div>
+
+        <div class="stat-card card">
+
+            <h3>😴 Avg Sleep</h3>
+
+            <h2>
+                {{ "%.1f"|format(study_stats.avg_sleep or 0) }} hrs
+            </h2>
+
+        </div>
+
+        <div class="stat-card card">
+
+            <h3>📱 Avg Social Media</h3>
+
+            <h2>
+                {{ "%.1f"|format(study_stats.avg_social or 0) }} hrs
+            </h2>
+
+        </div>
+
+        <div class="stat-card card">
+
+            <h3>🧠 Avg Focus Score</h3>
+
+            <h2>
+                {{ "%.1f"|format(study_stats.avg_focus or 0) }}/10
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleMenu(){
+
+    document
+        .getElementById("navLinks")
+        .classList
+        .toggle("active");
+
+}
+
+</script>
+
+<footer class="footer">
+
+    <div class="footer-center">
+
+         Made with Passion and Love for Exams 🚀
+
+    </div>
+
+    <div class="footer-right">
+
+        <p>Designed and Crafted by Yash Chandiramani</p>
+
+        <div class="social-links">
+
+            <a href="https://github.com/YashChandiramani" target="_blank">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+
+            <a href="https://www.linkedin.com/in/yash-chandiramani-589699352/" target="_blank">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Score Predictor</title>
+
+
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🎓 Student Score Predictor</div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+
+    <i class="fa-solid fa-bars"></i>
+
+</div>
+    <div class="nav-links" id = "navLinks">
+        <a href="/" class="active">Home</a>
+        <a href="/login" class="active">Login</a>
+        <a href="/signup" class="active">Signup</a>
+    </div>
+</nav>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>Predict Your Academic Performance Using AI</h1>
+
+        <p>
+            Analyze study habits, productivity, motivation,
+            lifestyle factors and mental state to estimate
+            your final exam performance.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/signup" class="btn-primary">Get Started</a>
+            <a href="/login" class="btn-secondary">Login</a>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="features">
+
+    <div class="feature-card card">
+        <h3>AI Prediction</h3>
+        <p>Predict final exam scores using ML.</p>
+    </div>
+
+    <div class="feature-card card">
+        <h3>Dashboard</h3>
+        <p>Track prediction history and analytics.</p>
+    </div>
+
+    <div class="feature-card card">
+        <h3>Student Insights</h3>
+        <p>Understand productivity and burnout factors.</p>
+    </div>
+
+</section>
+
+<script>
+
+function toggleMenu(){
+
+    document
+        .getElementById("navLinks")
+        .classList
+        .toggle("active");
+
+}
+
+</script>
+
+<footer class="footer">
+
+    <div class="footer-center">
+
+         Made with Passion and Love for Exams 🚀
+
+    </div>
+
+    <div class="footer-right">
+
+        <p>Designed and Crafted by Yash Chandiramani</p>
+
+        <div class="social-links">
+
+            <a href="https://github.com/YashChandiramani" target="_blank">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+
+            <a href="https://www.linkedin.com/in/yash-chandiramani-589699352/" target="_blank">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
