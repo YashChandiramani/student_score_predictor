@@ -248,7 +248,7 @@ def predict():
 
         age = int(request.form["age"])
         study_hours_per_day = float(request.form["study_hours_per_day"])
-        deep_work_sessions = int(request.form["deep_work_sessions"])
+        deep_work_sessions = float(request.form["deep_work_sessions"])
         assignment_completion_rate = int(request.form["assignment_completion_rate"])
         attendance_percentage = int(request.form["attendance_percentage"])
         social_media_hours = float(request.form["social_media_hours"])
